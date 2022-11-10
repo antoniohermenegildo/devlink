@@ -1,0 +1,15 @@
+.texto {
+    margin-top: 44px;
+    margin-bottom: 28px;
+    color: #ffffff;
+    font-size: 54px;
+}
+
+.texto-decorado {
+    margin-left: -10px;
+    font-weight: 900;
+    background: linear-gradient(#E18700, #FFD43A);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
