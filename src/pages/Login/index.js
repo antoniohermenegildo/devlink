@@ -2,17 +2,42 @@ import "./login.css";
 
 import { Logo } from "../../components/Logo";
 import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../services/firebaseConnection";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Login() {
+  {
+    /* Pegando as informações digitadas nos inputs */
+  }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+
+  {
+    /* Função de Autenticação */
+  }
   function handleLogin(e) {
     e.preventDefault();
 
-    alert(email + " a senha desse email é " + password);
+    if (email === "" || password === "") {
+      alert("Preencha todos os campos!");
+      return;
+    }
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        toast.success("Bem vindo de volta :) ");
+        navigate("/admin", { replace: true });
+      })
+      .catch(() => {
+        toast.error("Erro ao tentar fazer o login!");
+      });
   }
-
+  {
+    /* Formulário de login */
+  }
   return (
     <div className="login__container">
       <header className="login__cabecalho">
