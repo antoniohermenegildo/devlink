@@ -10,19 +10,23 @@ import Private from "./routes/Private";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />
+    element: <Home />,
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/admin",
-    element: <Private><Admin /></Private>
+    element: (
+      <Private>
+        <Admin />
+      </Private>
+    ),
   },
   {
     path: "*",
-    element: <Error />
+    element: <Error />,
   },
 ]);
 export { router };

@@ -1,4 +1,6 @@
 import "./login.css";
+import "../../css/button.css";
+import "../../css/form.css";
 
 import { Logo } from "../../components/Logo";
 import { useState } from "react";
@@ -45,14 +47,14 @@ export default function Login() {
         <Logo />
       </header>
       <main className="login__conteudo-principal">
-        <form className="login__form" onSubmit={handleLogin}>
+        <form className="form" onSubmit={handleLogin}>
           <Input
             type="email"
             placeholder="Digite seu email..."
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          
+
           <Input
             type="password"
             placeholder="********"
@@ -60,7 +62,9 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">Acessar</button>
+          <button className="btn" type="submit">
+            Acessar
+          </button>
         </form>
       </main>
     </div>
