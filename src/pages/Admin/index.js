@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./admin.css";
 import { Header } from "../../components/Header";
 import { Logo } from "../../components/Logo";
@@ -24,12 +24,43 @@ export default function Admin() {
   const [backgroundColorInput, setBackgroundColorInput] = useState("#f1f1f1");
   const [textColorInput, setTextColorInput] = useState("#121212");
 
+  const [links, setLinks] = useState([]);
+
+  {
+    /*função oara pegar a lista de likns que tem no banco pra mostrar na pagina*/
+  }
+  useEffect(() => {
+    const linksRef = collection(db, "links");
+    const queryRef = query(linksRef, orderBy("created", "asc"));
+
+    onSnapshot(queryRef, (snapshot) => {
+      let lista = [];
+
+      snapshot.forEach((doc) => {
+        lista.push({
+          id: doc.id,
+          name: doc.data().name,
+          url: doc.data().url,
+          bg: doc.data().bg,
+          txtColor: doc.data().txtColor,
+        });
+      });
+      setLinks(lista);
+    });
+  }, []);
+
+  {
+    /*Função de incluir o registro no banco*/
+  }
   async function handleRegister(e) {
     e.preventDefault();
 
     if (nameInput === "" || urlInput === "") {
       toast.warn("preencha todos os campos!");
       return;
+    }
+    {
+      /*cria a coleção links com o documento e os atributos*/
     }
     addDoc(collection(db, "links"), {
       name: nameInput,
@@ -39,18 +70,29 @@ export default function Admin() {
       created: new Date(),
     })
       .then(() => {
+        {
+          /*se der certo ele executa o then*/
+        }
         setNameInput("");
         setUrlInput("");
         console.log("Link registrado com sucesso!");
       })
       .catch((error) => {
+        {
+          /*se der algum erro ele executa o catch*/
+        }
         console.log("ERRO AO TENTAR REGISTRAR" + error);
         toast.error("Ops erro ao tentar salvar o link!");
       });
   }
 
+  async function handleDeleteLink(id) {
+    const docRef = doc(db, "links", id);
+    await deleteDoc(docRef);
+  }
+
   return (
-    <div className="admin__container">
+    <div className="container">
       <Header />
       <Logo />
       <form className="form" onSubmit={handleRegister}>
@@ -103,17 +145,24 @@ export default function Admin() {
         </button>
       </form>
       <h2 className="title">Meus links</h2>
-      <article
-        className="list animate__pop"
-        style={{ backgroundColor: "#000", color: "#fff" }}
-      >
-        <p> Grupo exclusivo no Telegram</p>
-        <div>
-          <button className="btn__delete">
-            <FiTrash2 size={18} color="#ffffff" />
-          </button>
-        </div>
-      </article>
+
+      {links.map((item, index) => (
+        <article
+          key={index}
+          className="list animate__pop"
+          style={{ backgroundColor: item.bg, color: item.txtColor }}
+        >
+          <p>{item.name}</p>
+          <div>
+            <button
+              className="btn__delete"
+              onClick={() => handleDeleteLink(item.id)}
+            >
+              <FiTrash2 size={18} color="#ffffff" />
+            </button>
+          </div>
+        </article>
+      ))}
     </div>
   );
 }

@@ -18,7 +18,7 @@ export function Header() {
           <BiLogOut size={28} color="#DB2629" />
         </button>
         <Link to="/admin">Links</Link>
-        <Link to="{/admin/social}">Redes Sociais</Link>
+        <Link to="/admin/social">Redes Sociais</Link>
       </nav>
     </header>
   );
